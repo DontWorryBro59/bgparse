@@ -250,7 +250,7 @@ def start_parse() -> None:
 
     print('*' * 100)
     print(f'Parsing completed! / Парсинг завершен!')
-    print(f'Time spent on parsing: {time_end - time_start}')
+    print(f'Time spent on parsing: {time_end - time_start} / Время выполнения парсинга: {time_end - time_start}')
 
 
 if __name__ == '__main__':
