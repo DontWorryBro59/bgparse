@@ -1,6 +1,7 @@
 import json
 import os
 import re
+from datetime import datetime as dt
 
 import requests
 from bs4 import BeautifulSoup
@@ -85,7 +86,7 @@ def get_sub_directories(clr_catalog: list[dict]) -> list:
     print('Improve subdirectories to the category dictionary has started! / Добавляем подкаталоги к категориям')
     for index, el in enumerate(clr_catalog):
         print(
-            f'Adding subdirectories to category {el["rus_name"]} [{index + 1}/{len(clr_catalog)}]')
+            f'Adding subdirectories to category [{el["rus_name"]}] [{index + 1}/{len(clr_catalog)}]')
         sub_dirs = []
         url = el['url']
         response = requests.get(url, cookies=COOKIES, headers=USER_AGENT)
@@ -154,7 +155,7 @@ def delete_out_of_stock_items(user_dict: list[dict]) -> list[dict]:
     count = 0
     for index, el in enumerate(user_dict):
         print(
-            f'Delete subcategories in {user_dict[index]['rus_name']} {user_dict[index]['rus_name']}')
+            f'Delete subcategories in [{user_dict[index]['rus_name']}]')
         new_sub_dir = []
         for sub_dir_el in el['sub_dirs']:
             if sub_dir_el['items']:
@@ -167,7 +168,63 @@ def delete_out_of_stock_items(user_dict: list[dict]) -> list[dict]:
     return user_dict
 
 
-if __name__ == '__main__':
+def get_items(url: str) -> (list[dict], int):
+    """
+    This function searches for items in stock and adds them to the subcategory dictionary
+    Эта функция ищет товары в наличии и добавляет их в словарь подкатегории
+    """
+    items = []
+    count = 0
+    request = requests.get(url, cookies=COOKIES, headers=USER_AGENT)
+    soup = BeautifulSoup(request.text, 'html.parser')
+    soup = soup.find('div', class_='col-12 table_order wRealOffers')
+    soup = soup.find_all('div', attrs={
+        'class': ['row', 'no-gutters', 'text-right', 'wPRow', 'wPRC_2', 'wP_c-2', 'wP_sc-49', 'wPRSC_49',
+                  'wProdAvail']})
+    for el in soup:
+        if el['class'][-1] == 'wProdAvail':
+            # Получаем название, цену и параметры товара
+            name = el.attrs['data-mname']
+            price = el.attrs['data-price']
+            params = el.find('small').text.strip().split(', ')
+            # Переводим параметры ['Плотность: 120', 'Размер: 64x90', 'Кол-во: Лист'] в словарь
+            params_to_dict = {'density': params[0].split()[1], 'size': params[1].split()[1],
+                              'quantity': params[2].split()[1]}
+            items.append({'item_name': name, 'price': price, 'params': params_to_dict})
+            count += 1
+        elif el['class'][-1] == 'wProdAvailNot':
+            # Как только натыкаемся на товар который не в наличии, выходим из цикла (все остальные товары не в наличии)
+            break
+    return items, count
+
+
+def add_items_with_price(it_with_price: list[dict]) -> list[dict]:
+    """
+    This function adds items to the subdirectory dictionary
+    Эта функция добавляет товары в словарь подкаталога
+    """
+    print('*' * 100)
+    print('Adding items to subdirectory dictionary has started! / Добавляем товары в словарь подкаталога')
+    quantity_items = 0
+    for el in it_with_price:
+        print(f'Adding items to subdirectory [{el['rus_name']}]', end=' ')
+        quantity_items_to_subdir = 0
+        for sub_dir in el['sub_dirs']:
+            for item in sub_dir['items']:
+                result = get_items(item['url'])
+                item['items'] = result[0]
+                quantity_items_to_subdir += result[1]
+        print(f'[{quantity_items_to_subdir}]')
+        quantity_items += quantity_items_to_subdir
+    print(f'Processing completed! / Обработка завершена!')
+    print(f'Found {quantity_items} items in subcategories! / Найдено {quantity_items} товаров в субкатегориях!')
+    print(f'Processing completed! / Обработка завершена!')
+    return it_with_price
+
+
+def start_parse() -> None:
+    time_start = dt.now()
+
     # Получаем 'грязный' список категорий
     wet_catalog = get_catalog()
 
@@ -183,6 +240,18 @@ if __name__ == '__main__':
     # Удаляем товары которых нет на складе
     fii_deleted = delete_out_of_stock_items(fii)
 
-    # Сохраняем данные в файл
-    create_file(fii_deleted)
+    # Получаем список товаров с ценами (товары в наличии)
+    items_with_price = add_items_with_price(fii_deleted)
 
+    # Сохраняем данные в файл
+    create_file(items_with_price)
+
+    time_end = dt.now()
+
+    print('*' * 100)
+    print(f'Parsing completed! / Парсинг завершен!')
+    print(f'Time spent on parsing: {time_end - time_start}')
+
+
+if __name__ == '__main__':
+    start_parse()
