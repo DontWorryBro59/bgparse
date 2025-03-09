@@ -1,13 +1,22 @@
-from myapp.database.models import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import os
+from database.models import Base
 
-db_url = ('postgresql+psycopg2://postgres:1234qwerty@localhost:5432/beregDB')
+DB_USER = os.getenv('DB_USER') or 'postgres'
+DB_PASSWORD = os.getenv('DB_PASSWORD') or 'postgres'
+DB_HOST = os.getenv('DB_HOST') or 'localhost'
+DB_PORT = os.getenv('DB_PORT') or '5432'
+DB_NAME = os.getenv('DB_NAME') or 'postgres'
+
+db_url = (f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}')
+
 
 class DatabaseRepository:
     """
     Repository class for database operations.
     """
+
     def __init__(self, url):
         self._engine = create_engine(url)
         self._Session = sessionmaker(bind=self._engine)

@@ -1,14 +1,18 @@
 import json
 import os
 import time
+
 from datetime import datetime as dt
+
 
 from database.database_init import DatabaseRepository, db_url
 from database.models import ProductModels
-from myapp.parser.parse import start_parse
+from parser.parse import start_parse
 
 time_to_sleep = os.getenv('TIME_TO_SLEEP') or 200
 time_to_sleep = int(time_to_sleep)
+
+
 
 def add_items_with_file_to_db() -> None:
     """Добавление товаров с ценами в базу данных"""
