@@ -4,11 +4,11 @@
 
 
   - [Проекты](#проекты)
-    - <a name="проект-1">[Проект №1 - bgparse](#проект-1---[https://github.com/DontWorryBro59/bgparse])</a>
-    - <a name="проект-2">[Проект №2 - fastBereg](#проект-2---[https://github.com/DontWorryBro59/fastBereg])</a>
-    - <a name="запуск">[Запуск]</a>
+    - [Проект №1 - bgparse [https://github.com/DontWorryBro59/bgparse]](#проект-1)
+    - [Проект №2 - fastBereg [https://github.com/DontWorryBro59/fastBereg]](#проект-2)
+    - [Запуск](#запуск)
 
-
+[отображаемое название](#название-заголовка)
 
 ## Проблема: 
 У поставщика материалов изготовления рекламной продукции и пр. отсутствует API.
@@ -17,7 +17,7 @@
 
 ## Проекты
 
-### Проект №1 - bgparse (#проект-1) [https://github.com/DontWorryBro59/bgparse]
+### Проект №1 - bgparse [https://github.com/DontWorryBro59/bgparse] (#проект-1) 
 
 #Задача
 - Требуется без получения доступа к основной базе данных скопированию все товары в наличии
@@ -50,7 +50,7 @@
 стек: FastAPI, SQLalchemy, Pydantic, Uvicorn.
 
 
-### Инструкция по сборке fastBereg + bgparse (#запуск)
+### Инструкция по сборке fastBereg + bgparse(#запуск)
 Для сборки связки fastBereg + bgparse потребуется:
 - Зайти на VPS сервер
 - Установить Docker
