@@ -4,9 +4,9 @@
 
 
   - [Проекты](#проекты)
-    - [Проект №1 - bgparse](#проект-1---[https://github.com/DontWorryBro59/bgparse])
-    - [Проект №2 - fastBereg](#проект-2---[https://github.com/DontWorryBro59/fastBereg])
-    - [Запуск] (#запуск)
+    - <a name="проект-1">[Проект №1 - bgparse](#проект-1---[https://github.com/DontWorryBro59/bgparse])</a>
+    - <a name="проект-2">[Проект №2 - fastBereg](#проект-2---[https://github.com/DontWorryBro59/fastBereg])</a>
+    - <a name="запуск">[Запуск]</a>
 
 
 
@@ -17,7 +17,7 @@
 
 ## Проекты
 
-### Проект №1 - bgparse (#проект-1---[https://github.com/DontWorryBro59/bgparse])
+### Проект №1 - bgparse (#проект-1) [https://github.com/DontWorryBro59/bgparse]
 
 #Задача
 - Требуется без получения доступа к основной базе данных скопированию все товары в наличии
@@ -37,7 +37,7 @@
 >Хочу обратить внимание, что данные для подключения в Docker-compose не несут в себе приватную информацию, данные использовались в тестовых целях.
 
 
-### Проект №2 - fastBereg (#проект-2---[https://github.com/DontWorryBro59/fastBereg])
+### Проект №2 - fastBereg (#проект-2) [https://github.com/DontWorryBro59/fastBereg]
 
 #Задача:
 Необходимо реализовать API для обращения и получения данных из БД с данными которые получил парсер..
