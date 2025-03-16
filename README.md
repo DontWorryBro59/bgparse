@@ -4,8 +4,8 @@
 
 
   - [Проекты](#проекты)
-    - [Проект №1 - bgparse [https://github.com/DontWorryBro59/bgparse]](#проект-1)
-    - [Проект №2 - fastBereg [https://github.com/DontWorryBro59/fastBereg]](#проект-2)
+    - [Проект №1 - bgparse (#проект-1)
+    - [Проект №2 - fastBereg (#проект-2)
     - [Запуск](#запуск)
 
 ## Проблема: 
